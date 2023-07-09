@@ -1,0 +1,145 @@
+/* Sort table */
+.table_sort table {
+    border-collapse: collapse;
+}
+
+.table_sort tbody tr:nth-child(even) {
+    background: #e3e3e3;
+}
+
+th.sorted[data-order="1"],
+th.sorted[data-order="-1"] {
+    position: relative;
+}
+
+th.sorted[data-order="1"]::after,
+th.sorted[data-order="-1"]::after {
+    right: 8px;
+    position: absolute;
+}
+
+th.sorted[data-order="-1"]::after {
+    content: "▼"
+}
+
+th.sorted[data-order="1"]::after {
+    content: "▲"
+}
+
+/* Sort table end */
+
+/* Document table */
+
+.documents-table {
+    max-height: 700px;
+    overflow: scroll;
+    position: relative !important;
+}
+
+.documents-table-search {
+    max-height: 840px;
+    overflow: scroll;
+    position: relative !important;
+}
+
+.documents-table-security {
+    max-height: 840px;
+    overflow: scroll;
+    position: relative !important; 
+}
+
+.documents-table th, td {
+    padding: 20px 40px 20px 20px;
+}
+
+.documents-table-search th, td {
+    padding: 20px 40px 20px 20px;
+}
+
+.documents-table-security th, td {
+    padding: 20px 40px 20px 20px;
+}
+
+@media (min-height: 800px) and (max-height: 970px) {
+    .documents-table {
+        max-height: 500px;
+        overflow: scroll;
+    }
+
+    .documents-table-search {
+        max-height: 670px;
+        overflow: scroll;
+    }
+
+    .documents-table-security {
+        max-height: 670px;
+        overflow: scroll;
+    }
+}
+
+@media (max-height: 799px) {
+    .documents-table {
+        max-height: 300px;
+        overflow: scroll;
+    }
+
+    .documents-table-search {
+        max-height: 470px;
+        overflow: scroll;
+    }
+
+    .documents-table-security {
+        max-height: 430px;
+        overflow: scroll;
+    }
+}
+
+.W {
+    background-color: rgb(151, 221, 151) !important;
+}
+
+.A {
+    background-color: rgb(179, 178, 178) !important;
+}
+
+.P {
+    background-color: rgb(221, 221, 179) !important;
+}
+
+.N {
+    background-color: rgb(219, 160, 160) !important;
+}
+
+.scroll-comment {
+    display: block;
+    max-height: 100px;
+    overflow-y: scroll;
+}
+
+/* Document table end */
+
+/* Select2 */
+
+.select2-selection {
+    box-shadow: none !important;
+    transition: none !important;
+}
+
+.select2-selection--multiple {
+    box-shadow: none !important;
+    transition: none !important;
+}
+
+.select2-container {
+    min-width: 300px;
+}
+
+/* Select2 style end */
+
+/* Line */
+
+.line {
+    border-top: 4px dashed black;
+}
+
+/* Line end */

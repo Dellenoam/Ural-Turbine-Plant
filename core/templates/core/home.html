@@ -1,0 +1,15 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %} Главная страница {% endblock %}
+
+{% block content %}
+    <div class="d-flex flex-column justify-content-center align-items-center flex-grow-1">
+        <div>
+            <a href="{% url 'access_office' %}" class="select-section btn btn-outline-dark btn-lg mx-2 my-2 w-100">
+                Бюро пропусков
+            </a>
+            <a href="{% url 'security' %}" class="select-section btn btn-outline-dark btn-lg mx-2 my-2 w-100">Охрана</a>
+        </div>
+    </div>
+{% endblock %}

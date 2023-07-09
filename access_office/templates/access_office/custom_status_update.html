@@ -1,0 +1,20 @@
+{% extends 'base/base.html' %}
+
+{% block title %} Изменение статусов {% endblock %}
+
+{% block content %}
+    <div class="mx-1">
+        <form method="POST" id="custom_status_form">
+            {% csrf_token %}
+            <div class="d-flex align-items-center gap-2">
+                <div class="input-group w-auto my-2">
+                    <span class="input-group-text" id="basic-addon1">Кастомный статус</span>
+                    {{ form_custom_status.custom_status }}
+                </div>
+                <div class="input-group w-auto my-2">
+                    <input class="btn btn-success my-2" type="submit" value="Сохранить">
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}

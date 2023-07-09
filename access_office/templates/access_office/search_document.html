@@ -1,0 +1,69 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %} Поиск по запросу {{ search }} {% endblock %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'access_office/css/styles.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="documents-table-search z-0">
+        <table class="text-center table_sort">
+            <thead>
+            <tr id="document_head">
+                <th scope="col" id="document_status"> Статус</th>
+                <th scope="col" id="document_number"> Номер документа</th>
+                <th scope="col" id="document_title"> Название документа</th>
+                <th scope="col" id="document_date_start"> Дата начала документа</th>
+                <th scope="col" id="document_date_end"> Дата окончания документа</th>
+                <th scope="col" id="document_comment_for_access_office"> Комментарий бюро</th>
+                <th scope="col" id="document_comment_for_security">Комментарий охраны</th>
+                <th scope="col" id="document_crossing_point"> Пропускной пункт</th>
+                <th scope="col" id="document_license_plate"> Гос. рег. знак</th>
+                <th scope="col" id="document_car_registration_number"> Номер свидетельства о рег. ТС</th>
+                <th scope="col" id="document_car_brand"> Марка ТС</th>
+                <th scope="col" id="document_driver"> ФИО водителя</th>
+                <th scope="col" id="document_passport_details"> Паспортные данные водителя</th>
+                <th scope="col" id="document_date_of_birth"> Дата рождения</th>
+                <th scope="col" id="document_driver_license_number"> Номер водительского удостоверения</th>
+                {% if user.is_authenticated %}
+                    <th scope="col" id="document_update">Изменить документ</th>
+                {% else %}
+                    <th scope="col" id="document_detail">Посмотреть документ</th>
+                {% endif %}
+            </tr>
+            </thead>
+            <tbody>
+            {% for document in documents %}
+                <tr id="document_data">
+                    <td id="document_status">{{ document.get_status_display }}</td>
+                    <td id="document_number">{{ document.number_of_document }}</td>
+                    <td id="document_title">{{ document.title }}</td>
+                    <td id="document_date_start">{{ document.date_start }}</td>
+                    <td id="document_date_end">{{ document.date_end }}</td>
+                    <td id="document_comment_for_access_office">{{ document.comment_for_access_office }}</td>
+                    <td id="document_comment_for_security">{{ document.comment_for_security }}</td>
+                    <td id="document_crossing_point">{{ document.crossing_point_name.all|join:", "}}</td>
+                    <td id="document_license_plate">{{ document.auto.license_plate }}</td>
+                    <td id="document_car_registration_number">{{ document.auto.car_registration_number }}</td>
+                    <td id="document_car_brand">{{ document.auto.car_brand }}</td>
+                    <td id="document_driver">{{ document.auto.driver.full_name }}</td>
+                    <td id="document_passport_details">{{ document.auto.driver.passport_details }}</td>
+                    <td id="document_date_of_birth">{{ document.auto.driver.date_of_birth }}</td>
+                    <td id="document_driver_license_number">{{ document.auto.driver.driver_license_number }}</td>
+                    {% if request.user.is_authenticated %}
+                        <td class="update_document"><a href="{% url 'update_document' document.id %}"> Изменить </a>
+                        </td>
+                    {% else %}
+                        <td class="document_detail"><a href="{% url 'security_pass' document.id %}"> Подробнее </a></td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
+{% block js %}
+    <script type="text/javascript" src="{% static 'access_office/js/scripts.js' %}"></script>
+{% endblock %}

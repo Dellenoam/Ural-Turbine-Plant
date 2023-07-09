@@ -1,0 +1,35 @@
+{% extends 'base/base.html' %}
+
+{% block title %} Список пропускных пунктов {% endblock %}
+
+{% block content %}
+    <div class="mx-2">
+        {% for custom_status in custom_statuses %}
+            <div class="modal" tabindex="-1" id="{{ custom_status }}">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Удаление записи</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p>Вы уверены что хотите удалить статус - {{ custom_status }}?</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Нет</button>
+                            <a href="{% url 'custom_status_delete' custom_status.id %}" class="btn btn-primary">Да</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex align-items-center gap-2">
+                <div class="input-group my-2 w-auto">
+                    <span class="input-group-text">Кастомный статус</span>
+                    <input readonly class="input-group-text" style="outline:0" placeholder="Кастомный статус" value="{{ custom_status }}">
+                    <a class="btn btn-primary" href="{% url 'custom_status_update' custom_status.id %}">Изменить</a>
+                    <button class="input-group-text link-primary" data-bs-toggle="modal" data-bs-target="#{{ custom_status }}">Удалить</button>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

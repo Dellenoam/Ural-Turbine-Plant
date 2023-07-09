@@ -1,0 +1,174 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %} Создание документа {% endblock %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'access_office/css/styles.css' %}">
+{% endblock %}
+{% block content %}
+    <div class="mx-2">
+        <form method="POST" id="document_form" class="my-2" name="document" enctype="multipart/form-data">
+            {% csrf_token %}
+            {% if error_document %}
+                <div class="alert alert-danger alert-dismissible fade show my-2">
+                    <strong>Ошибка!</strong> {{ error_document }}
+                    <button type="button" class="btn-close shadow-none" data-bs-dismiss="alert"></button>
+                </div>
+            {% endif %}
+            <div class="d-flex align-items-center gap-2">
+                <div class="input-group w-auto">
+                    <span class="input-group-text" id="basic-addon1">Кастомизируемый статус</span>
+                    {{ form_document.custom_status }}
+                </div>
+            </div>
+            <div class="d-flex align-items-center gap-2">
+                <div class="input-group w-auto my-2">
+                    <span class="input-group-text" id="basic-addon1">Номер документа</span>
+                    {{ form_document.number_of_document }}
+                </div>
+                <div class="input-group w-auto my-2">
+                    <span class="input-group-text" id="basic-addon1">Название документа</span>
+                    {{ form_document.title }}
+                </div>
+            </div>
+            <div class="d-flex align-items-center gap-2">
+                <div class="input-group w-auto my-2">
+                    <span class="input-group-text" id="basic-addon1">Дата начала документа</span>
+                    {{ form_document.date_start }}
+                </div>
+                <div class="input-group date w-auto my-2" id="date_end_div">
+                    <span class="input-group-text" id="basic-addon1">Дата окончания документа</span>
+                    {{ form_document.date_end }}
+                </div>
+                <div class="input-group w-auto my-2">
+                    <span class="input-group-text" id="basic-addon1">Одноразовый пропуск</span>
+                    <span class="form-control" id="basic-addon1">
+                    <input id='one_time_pass' type='checkbox' onchange='OneTimePass(this)'>
+                    </span>
+                </div>
+            </div>
+            <div class="d-flex align-items-center gap-2">
+                <div class="input-group my-2 w-auto">
+                    <span class="input-group-text">Комментарий бюро</span>
+                    {{ form_document.comment_for_access_office }}
+                </div>
+            </div>
+            <div class="d-flex align-items-center gap-2">
+                <div class="input-group my-2 w-auto">
+                    <span class="input-group-text">Ввоз</span>
+                    {{ form_document.comment_import }}
+                </div>
+            </div>
+            <div class="d-flex align-items-center gap-2">
+                <div class="input-group my-2 w-auto">
+                    <span class="input-group-text">Вывоз</span>
+                    {{ form_document.comment_export }}
+                </div>
+            </div>
+            <div class="d-flex align-items-center gap-2">
+                <div class="input-group w-auto my-2">
+                    <span class="input-group-text" id="basic-addon1">Пропускной пункт</span>
+                    {{ form_document.crossing_point_name }}
+                </div>
+            </div>
+            <div class="d-flex align-items-center gap-2">
+                <div class="input-group w-auto my-2">
+                    {{ form_document.document_file }}
+                </div>
+            </div>
+            <div class="d-flex align-items-center gap-2">
+                <div class="input-group w-auto">
+                    <span class="input-group-text" id="basic-addon1">Автомобиль</span>
+                    {{ form_document.auto }}
+                </div>
+                <div class="input-group w-auto">
+                    <input class="btn btn-success my-2" name="form_to_check_document" type="submit" value="Создать пропуск">
+                </div>
+            </div>
+            <div class="d-flex align-items-center gap-2 hidden" id="automobile_checkbox">
+                <div class="input-group w-auto my-2">
+                    <span class="input-group-text" id="basic-addon1">Автомобиль уже создан</span>
+                    <span class="form-control" id="basic-addon1">
+                        <input class="my-2" type="checkbox" id="automobile_checkbox" onchange="HideShow(this)" checked>
+                    </span>
+                </div>
+            </div>
+        </form>
+
+        <form method="POST" id="automobile_form" class="my-2" hidden>
+            {% csrf_token %}
+            <hr class="line">
+            <div id="error_automobile">
+            </div>
+            <div class="d-flex align-items-center gap-2">
+                <div class="input-group w-auto my-2">
+                    <span class="input-group-text" id="basic-addon1">Гос. рег. знак</span>
+                    {{ form_automobile.license_plate }}
+                </div>
+                <div class="input-group w-auto my-2">
+                    <span class="input-group-text" id="basic-addon1"> Номер свидетельства о рег. ТС</span>
+                    {{ form_automobile.car_registration_number }}
+                </div>
+                <div class="input-group w-auto my-2">
+                    <span class="input-group-text" id="basic-addon1">Марка ТС</span>
+                    {{ form_automobile.car_brand }}
+                </div>
+            </div>
+            <div class="d-flex align-items-center gap-2">
+                <div class="input-group w-auto">
+                    <span class="input-group-text" id="basic-addon1">Водитель</span>
+                    {{ form_automobile.driver }}
+                </div>
+                <div class="input-group w-auto">
+                    <input class="btn btn-success my-2" type="submit" value="Создать автомобиль">
+                </div>
+            </div>
+            <div class="d-flex align-items-center gap-2" id="driver_checkbox">
+                <div class="input-group w-auto my-2">
+                    <span class="input-group-text" id="basic-addon1">Водитель уже создан</span>
+                    <span class="form-control" id="basic-addon1">
+                    <input type="checkbox" id="driver_checkbox" onchange="HideShow(this)" checked>
+                    </span>
+                </div>
+            </div>
+        </form>
+
+        <form method="POST" id="driver_form" class="my-2" hidden>
+            {% csrf_token %}
+            <hr class="line">
+            <div id="error_driver">
+            </div>
+            <div class="d-flex align-items-center gap-2">
+                <div class="input-group w-auto my-2">
+                    <span class="input-group-text" id="basic-addon1">ФИО</span>
+                    {{ form_driver.full_name }}
+                </div>
+                <div class="input-group w-auto my-2">
+                    <span class="input-group-text" id="basic-addon1">Паспортные данные</span>
+                    {{ form_driver.passport_details }}
+                </div>
+            </div>
+            <div class="d-flex align-items-center gap-2">
+                <div class="input-group w-auto my-2">
+                    <span class="input-group-text" id="basic-addon1">Дата рождения</span>
+                    {{ form_driver.date_of_birth }}
+                </div>
+                <div class="input-group w-auto my-2">
+                    <span class="input-group-text" id="basic-addon1">Номер водительского удостоверения</span>
+                    {{ form_driver.driver_license_number }}
+                </div>
+                <div class="input-group w-auto">
+                    <input class="btn btn-success my-2" type="submit" value="Создать водителя">
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}
+
+{% block js %}
+    <script>
+        var url = "{% url 'create_document' %}";
+    </script>
+    <script type="text/javascript" src="{% static 'access_office/js/scripts.js' %}"></script>
+{% endblock %}

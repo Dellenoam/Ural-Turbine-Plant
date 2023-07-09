@@ -1,0 +1,24 @@
+{% extends 'base/base.html' %}
+
+{% block title %} Создание нового статуса документа {% endblock %}
+
+{% block content %}
+    <div class="mx-2">
+        <form method="POST" id="custom_status" class="my-2">
+            {% csrf_token %}
+            {% if error_custom_status %}
+                <div class="alert alert-danger alert-dismissible fade show my-2">
+                    <strong>Ошибка!</strong> {{ error_custom_status }}
+                    <button type="button" class="btn-close shadow-none" data-bs-dismiss="alert"></button>
+                </div>
+            {% endif %}
+            <div class="d-flex align-items-center gap-2">
+                <div class="input-group w-auto my-2">
+                    <span class="input-group-text" id="basic-addon1">Кастомизируемый статус</span>
+                    {{ form_custom_status.custom_status }}
+                </div>
+            </div>
+            <input class="btn btn-success my-2" type="submit" name="is_custom_status" value="Создать">
+        </form>
+    </div>
+{% endblock %}
