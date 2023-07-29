@@ -205,7 +205,7 @@
                 Сбросить фильтры
             </button>
         </div>
-        
+
         {% if error_no_record_selected %}
             <div class="alert alert-danger alert-dismissible fade show my-2">
                 <strong>Ошибка!</strong> {{ error_no_record_selected }}
@@ -255,11 +255,19 @@
                             </td>
                             <td id="document_date_start">{{ document.date_start }}</td>
                             <td id="document_date_end">{{ document.date_end }}</td>
-                            <td id="document_comment_for_access_office"><div class="scroll-comment">{{ document.comment_for_access_office }}</div></td>
-                            <td id="document_comment_for_security"><div class="scroll-comment">{{ document.comment_for_security }}</div></td>
-                            <td id="document_comment_import" ><div class="scroll-comment">{{ document.comment_import }}</div></td>
-                            <td id="document_comment_export"><div class="scroll-comment">{{ document.comment_export }}</div></td>
-                            <td id="document_crossing_point">{{ document.crossing_point_name.all|join:", "}}</td>
+                            <td id="document_comment_for_access_office">
+                                <div class="scroll-comment">{{ document.comment_for_access_office }}</div>
+                            </td>
+                            <td id="document_comment_for_security">
+                                <div class="scroll-comment">{{ document.comment_for_security }}</div>
+                            </td>
+                            <td id="document_comment_import">
+                                <div class="scroll-comment">{{ document.comment_import }}</div>
+                            </td>
+                            <td id="document_comment_export">
+                                <div class="scroll-comment">{{ document.comment_export }}</div>
+                            </td>
+                            <td id="document_crossing_point">{{ document.crossing_point_name.all|join:", " }}</td>
                             <td id="document_license_plate">{{ document.auto.license_plate }}</td>
                             <td id="document_car_registration_number">{{ document.auto.car_registration_number }}</td>
                             <td id="document_car_brand">{{ document.auto.car_brand }}</td>

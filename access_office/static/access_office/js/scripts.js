@@ -5,6 +5,7 @@ function TableHideShow(obj) {
         filterElements_head.forEach(item => {
             if (item.id.indexOf(checkbox_name) > -1) {
                 item.setAttribute('hidden', '');
+                localStorage.setItem(checkbox_name, 'false')
             }
         });
 
@@ -19,6 +20,8 @@ function TableHideShow(obj) {
         filterElements_head.forEach(item => {
             if (item.id.indexOf(checkbox_name) > -1) {
                 item.removeAttribute('hidden');
+                localStorage.setItem(checkbox_name, 'true')
+                console.log(localStorage.getItem(checkbox_name));
             }
         });
 
@@ -29,6 +32,17 @@ function TableHideShow(obj) {
             }
         })
     }
+}
+
+function CheckboxState() {
+    let filterElements_head = document.querySelectorAll('#document_head th');
+        filterElements_head.forEach(item => {
+            if (localStorage.getItem(item.id) == 'false') {
+                let checkbox = document.querySelectorAll(`input[id="${item.id}"]`);
+                checkbox[0].removeAttribute('checked');
+                TableHideShow(checkbox[0]);
+            }
+        });
 }
 
 function show_by_status(obj) {

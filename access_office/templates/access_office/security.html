@@ -8,190 +8,229 @@
 {% endblock %}
 {% block content %}
     <div class="mx-2">
-    <div class="d-flex align-items-center gap-2 my-2">
-        <div>
-            Пропускной пункт
+        <div class="d-flex align-items-center gap-2 my-2">
+            <div>
+                Пропускной пункт
+            </div>
+            <div>
+                <select class="form-select shadow-none" onchange="crossing_point_choice(this)" id="crossing_point_choice">
+                    {% for crossing_point in crossing_points %}
+                        <option>{{ crossing_point }}</option>
+                    {% endfor %}
+                </select>
+            </div>
         </div>
-        <div>
-            <select class="form-select shadow-none" onchange="crossing_point_choice(this)" id="crossing_point_choice">
-                {% for crossing_point in crossing_points %}
-                    <option>{{ crossing_point }}</option>
-                {% endfor %}
-            </select>
-        </div>
-    </div>
 
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-        Отображение таблицы
-    </button>
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            Отображение таблицы
+        </button>
 
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">Отображение таблицы</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="input-group my-2">
-                        <span class="input-group-text" id="basic-addon1">Номер документа</span>
-                        <span class="d-flex form-control flex-grow-0 w-auto" id="basic-addon1">
-                            <input type="checkbox" id="document_number" onchange="TableHideShow(this)" checked>
-                        </span>
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Отображение таблицы</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="input-group my-2">
-                        <span class="input-group-text" id="basic-addon1">Название документа</span>
-                        <span class="d-flex form-control flex-grow-0 w-auto" id="basic-addon1">
-                            <input type="checkbox" id="document_title" onchange="TableHideShow(this)" checked>
-                        </span>
+                    <div class="modal-body">
+                        <div class="input-group my-2">
+                            <span class="input-group-text" id="basic-addon1">Номер документа</span>
+                            <span class="d-flex form-control flex-grow-0 w-auto" id="basic-addon1">
+                                <input type="checkbox" id="document_number" onchange="TableHideShow(this)" checked>
+                            </span>
+                        </div>
+                        <div class="input-group my-2">
+                            <span class="input-group-text" id="basic-addon1">Название документа</span>
+                            <span class="d-flex form-control flex-grow-0 w-auto" id="basic-addon1">
+                                <input type="checkbox" id="document_title" onchange="TableHideShow(this)" checked>
+                            </span>
+                        </div>
+                        <div class="input-group my-2">
+                            <span class="input-group-text" id="basic-addon1">Кастомный статус</span>
+                            <span class="d-flex form-control flex-grow-0 w-auto" id="basic-addon1">
+                                <input type="checkbox" id="document_custom_status" onchange="TableHideShow(this)" checked>
+                            </span>
+                        </div>
+                        <div class="input-group my-2">
+                            <span class="input-group-text" id="basic-addon1">Просмотр</span>
+                            <span class="d-flex form-control flex-grow-0 w-auto" id="basic-addon1">
+                                <input type="checkbox" id="document_details" onchange="TableHideShow(this)" checked>
+                            </span>
+                        </div>
+                        <div class="input-group my-2">
+                            <span class="input-group-text" id="basic-addon1">Дата начала</span>
+                            <span class="d-flex form-control flex-grow-0 w-auto" id="basic-addon1">
+                                <input type="checkbox" id="document_date_start" onchange="TableHideShow(this)" checked>
+                            </span>
+                        </div>
+                        <div class="input-group my-2">
+                            <span class="input-group-text" id="basic-addon1">Дата окончания</span>
+                            <span class="d-flex form-control flex-grow-0 w-auto" id="basic-addon1">
+                                <input type="checkbox" id="document_date_end" onchange="TableHideShow(this)" checked>
+                            </span>
+                        </div>
+                        <div class="input-group my-2">
+                            <span class="input-group-text" id="basic-addon1">Комментарий бюро</span>
+                            <span class="d-flex form-control flex-grow-0 w-auto" id="basic-addon1">
+                                <input type="checkbox" id="document_comment_for_access_office"
+                                       onchange="TableHideShow(this)" checked>
+                            </span>
+                        </div>
+                        <div class="input-group my-2">
+                            <span class="input-group-text" id="basic-addon1">Ввоз | Внос</span>
+                            <span class="d-flex form-control flex-grow-0 w-auto" id="basic-addon1">
+                                <input type="checkbox" id="document_comment_import"
+                                       onchange="TableHideShow(this)" checked>
+                            </span>
+                        </div>
+                        <div class="input-group my-2">
+                            <span class="input-group-text" id="basic-addon1">Вывоз | Вынос</span>
+                            <span class="d-flex form-control flex-grow-0 w-auto" id="basic-addon1">
+                                <input type="checkbox" id="document_comment_export"
+                                       onchange="TableHideShow(this)" checked>
+                            </span>
+                        </div>
+                        <div class="input-group my-2">
+                            <span class="input-group-text" id="basic-addon1">Комментарий охраны</span>
+                            <span class="d-flex form-control flex-grow-0 w-auto" id="basic-addon1">
+                                <input type="checkbox" id="document_comment_for_security"
+                                       onchange="TableHideShow(this)" checked>
+                            </span>
+                        </div>
+                        <div class="input-group my-2">
+                            <span class="input-group-text" id="basic-addon1">Пропускной пункт</span>
+                            <span class="d-flex form-control flex-grow-0 w-auto" id="basic-addon1">
+                                <input type="checkbox" id="document_crossing_point"
+                                       onchange="TableHideShow(this)" checked>
+                            </span>
+                        </div>
+                        <div class="input-group my-2">
+                            <span class="input-group-text" id="basic-addon1">Гос. рег. знак</span>
+                            <span class="d-flex form-control flex-grow-0 w-auto" id="basic-addon1">
+                                <input type="checkbox" id="document_license_plate"
+                                       onchange="TableHideShow(this)" checked>
+                            </span>
+                        </div>
+                        <div class="input-group my-2">
+                            <span class="input-group-text" id="basic-addon1">Номер свидетельства о рег. ТС</span>
+                            <span class="d-flex form-control flex-grow-0 w-auto" id="basic-addon1">
+                                <input type="checkbox" id="document_car_registration_number"
+                                       onchange="TableHideShow(this)" checked>
+                            </span>
+                        </div>
+                        <div class="input-group my-2">
+                            <span class="input-group-text" id="basic-addon1">Марка ТС</span>
+                            <span class="d-flex form-control flex-grow-0 w-auto" id="basic-addon1">
+                                <input type="checkbox" id="document_car_brand" onchange="TableHideShow(this)" checked>
+                            </span>
+                        </div>
+                        <div class="input-group my-2">
+                            <span class="input-group-text" id="basic-addon1">ФИО водителя</span>
+                            <span class="d-flex form-control flex-grow-0 w-auto" id="basic-addon1">
+                                <input type="checkbox" id="document_driver" onchange="TableHideShow(this)" checked>
+                            </span>
+                        </div>
+                        <div class="input-group w-auto my-2">
+                            <span class="input-group-text" id="basic-addon1">Паспортные данные водителя</span>
+                            <span class="d-flex form-control flex-grow-0 w-auto" id="basic-addon1">
+                                <input type="checkbox" id="document_passport_details"
+                                       onchange="TableHideShow(this)" checked>
+                            </span>
+                        </div>
+                        <div class="input-group w-auto my-2">
+                            <span class="input-group-text" id="basic-addon1">Дата рождения</span>
+                            <span class="d-flex form-control flex-grow-0 w-auto" id="basic-addon1">
+                                <input type="checkbox" id="document_date_of_birth"
+                                       onchange="TableHideShow(this)" checked>
+                            </span>
+                        </div>
+                        <div class="input-group w-auto my-2">
+                            <span class="input-group-text" id="basic-addon1">Номер водительского удостоверения</span>
+                            <span class="d-flex form-control flex-grow-0 w-auto" id="basic-addon1">
+                                <input type="checkbox" id="driver_license_number"
+                                       onchange="TableHideShow(this)" checked>
+                            </span>
+                        </div>
                     </div>
-                    <div class="input-group my-2">
-                        <span class="input-group-text" id="basic-addon1">Просмотр</span>
-                        <span class="d-flex form-control flex-grow-0 w-auto" id="basic-addon1">
-                            <input type="checkbox" id="document_details" onchange="TableHideShow(this)" checked>
-                        </span>
+                    <div class="modal-footer justify-content-center">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
                     </div>
-                    <div class="input-group my-2">
-                        <span class="input-group-text" id="basic-addon1">Дата начала</span>
-                        <span class="d-flex form-control flex-grow-0 w-auto" id="basic-addon1">
-                            <input type="checkbox" id="document_date_start" onchange="TableHideShow(this)" checked>
-                        </span>
-                    </div>
-                    <div class="input-group my-2">
-                        <span class="input-group-text" id="basic-addon1">Дата окончания</span>
-                        <span class="d-flex form-control flex-grow-0 w-auto" id="basic-addon1">
-                            <input type="checkbox" id="document_date_end" onchange="TableHideShow(this)" checked>
-                        </span>
-                    </div>
-                    <div class="input-group my-2">
-                        <span class="input-group-text" id="basic-addon1">Комментарий бюро</span>
-                        <span class="d-flex form-control flex-grow-0 w-auto" id="basic-addon1">
-                            <input type="checkbox" id="document_comment_for_access_office"
-                                   onchange="TableHideShow(this)" checked>
-                        </span>
-                    </div>
-                    <div class="input-group my-2">
-                        <span class="input-group-text" id="basic-addon1">Комментарий охраны</span>
-                        <span class="d-flex form-control flex-grow-0 w-auto" id="basic-addon1">
-                            <input type="checkbox" id="document_comment_for_security"
-                                   onchange="TableHideShow(this)" checked>
-                        </span>
-                    </div>
-                    <div class="input-group my-2">
-                        <span class="input-group-text" id="basic-addon1">Пропускной пункт</span>
-                        <span class="d-flex form-control flex-grow-0 w-auto" id="basic-addon1">
-                            <input type="checkbox" id="document_crossing_point"
-                                   onchange="TableHideShow(this)" checked>
-                        </span>
-                    </div>
-                    <div class="input-group my-2">
-                        <span class="input-group-text" id="basic-addon1">Гос. рег. знак</span>
-                        <span class="d-flex form-control flex-grow-0 w-auto" id="basic-addon1">
-                            <input type="checkbox" id="document_license_plate"
-                                   onchange="TableHideShow(this)" checked>
-                        </span>
-                    </div>
-                    <div class="input-group my-2">
-                        <span class="input-group-text" id="basic-addon1">Номер свидетельства о рег. ТС</span>
-                        <span class="d-flex form-control flex-grow-0 w-auto" id="basic-addon1">
-                            <input type="checkbox" id="document_car_registration_number"
-                                   onchange="TableHideShow(this)" checked>
-                        </span>
-                    </div>
-                    <div class="input-group my-2">
-                        <span class="input-group-text" id="basic-addon1">Марка ТС</span>
-                        <span class="d-flex form-control flex-grow-0 w-auto" id="basic-addon1">
-                            <input type="checkbox" id="document_car_brand" onchange="TableHideShow(this)" checked>
-                        </span>
-                    </div>
-                    <div class="input-group my-2">
-                        <span class="input-group-text" id="basic-addon1">ФИО водителя</span>
-                        <span class="d-flex form-control flex-grow-0 w-auto" id="basic-addon1">
-                            <input type="checkbox" id="document_driver" onchange="TableHideShow(this)" checked>
-                        </span>
-                    </div>
-                    <div class="input-group w-auto my-2">
-                        <span class="input-group-text" id="basic-addon1">Паспортные данные водителя</span>
-                        <span class="d-flex form-control flex-grow-0 w-auto" id="basic-addon1">
-                            <input type="checkbox" id="document_passport_details"
-                                   onchange="TableHideShow(this)" checked>
-                        </span>
-                    </div>
-                    <div class="input-group w-auto my-2">
-                        <span class="input-group-text" id="basic-addon1">Дата рождения</span>
-                        <span class="d-flex form-control flex-grow-0 w-auto" id="basic-addon1">
-                            <input type="checkbox" id="date_of_birth"
-                                   onchange="TableHideShow(this)" checked>
-                        </span>
-                    </div>
-                    <div class="input-group w-auto my-2">
-                        <span class="input-group-text" id="basic-addon1">Номер водительского удостоверения</span>
-                        <span class="d-flex form-control flex-grow-0 w-auto" id="basic-addon1">
-                            <input type="checkbox" id="driver_license_number"
-                                   onchange="TableHideShow(this)" checked>
-                        </span>
-                    </div>
-                </div>
-                <div class="modal-footer justify-content-center">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
                 </div>
             </div>
         </div>
-    </div>
 
-    <div class="documents-table-security z-0">
-        <table class="text-center table_sort">
-            <thead id="document_head" class="sticky-top bg-light">
-            <tr id="document_head">
-                <th scope="col" id="document_number"> Номер документа</th>
-                <th scope="col" id="document_title"> Название документа</th>
-                <th scope="col" id="document_details">Просмотр</th>
-                <th scope="col" id="document_date_start"> Дата начала документа</th>
-                <th scope="col" id="document_date_end"> Дата окончания документа</th>
-                <th scope="col" id="document_comment_for_access_office"> Комментарий бюро</th>
-                <th scope="col" id="document_comment_for_security"> Комментарий охраны</th>
-                <th scope="col" id="document_crossing_point"> Пропускной пункт</th>
-                <th scope="col" id="document_license_plate">Гос. рег. знак</th>
-                <th scope="col" id="document_car_registration_number"> Номер свидетельства о рег. ТС</th>
-                <th scope="col" id="document_car_brand"> Марка ТС</th>
-                <th scope="col" id="document_driver"> ФИО водителя</th>
-                <th scope="col" id="document_passport_details"> Паспортные данные водителя</th>
-                <th scope="col" id="document_date_of_birth"> Дата рождения</th>
-                <th scope="col" id="document_driver_license_number"> Номер водительского удостоверения</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for document in documents %}
-                {% if document.status == 'W' %}
-                    <tr id="document_data">
-                        <td id="document_number">{{ document.number_of_document }}</td>
-                        <td id="document_title">{{ document.title }}</td>
-                        <td>
-                            <a href="{% url 'security_pass' document.id %}">Посмотреть</a>
-                        </td>
-                        <td id="document_date_start">{{ document.date_start }}</td>
-                        <td id="document_date_end">{{ document.date_end }}</td>
-                        <td id="document_comment_for_access_office">{{ document.comment_for_access_office }}</td>
-                        <td id="document_comment_for_security">{{ document.comment_for_security }}</td>
-                        <td id="document_crossing_point">
-                            {% for crossing_point_name in document.crossing_point_name.all %}
-                                {{ crossing_point_name }}
-                            {% endfor %}
-                        </td>
-                        <td id="document_license_plate">{{ document.auto.license_plate }}</td>
-                        <td id="document_car_registration_number">{{ document.auto.car_registration_number }}</td>
-                        <td id="document_car_brand">{{ document.auto.car_brand }}</td>
-                        <td id="document_driver">{{ document.auto.driver.full_name }}</td>
-                        <td id="document_passport_details">{{ document.auto.driver.passport_details }}</td>
-                        <td id="document_date_of_birth">{{ document.auto.driver.date_of_birth }}</td>
-                        <td id="document_driver_license_number">{{ document.auto.driver.driver_license_number }}</td>
-                    </tr>
-                {% endif %}
-            {% endfor %}
-            </tbody>
-        </table>
+        <div class="documents-table-security z-0">
+            <table class="text-center table_sort">
+                <thead id="document_head" class="sticky-top bg-light">
+                <tr id="document_head">
+                    <th scope="col" id="document_number"> Номер документа</th>
+                    <th scope="col" id="document_custom_status">Кастомизируемый статус</th>
+                    <th scope="col" id="document_title"> Название документа</th>
+                    <th scope="col" id="document_details">Просмотр</th>
+                    <th scope="col" id="document_date_start"> Дата начала документа</th>
+                    <th scope="col" id="document_date_end"> Дата окончания документа</th>
+                    <th scope="col" id="document_comment_for_access_office"> Комментарий бюро</th>
+                    <th scope="col" id="document_comment_for_security"> Комментарий охраны</th>
+                    <th scope="col" id="document_comment_import"> Ввоз Внос</th>
+                    <th scope="col" id="document_comment_export"> Вывоз Вынос</th>
+                    <th scope="col" id="document_crossing_point"> Пропускной пункт</th>
+                    <th scope="col" id="document_license_plate">Гос. рег. знак</th>
+                    <th scope="col" id="document_car_registration_number"> Номер свидетельства о рег. ТС</th>
+                    <th scope="col" id="document_car_brand"> Марка ТС</th>
+                    <th scope="col" id="document_driver"> ФИО водителя</th>
+                    <th scope="col" id="document_passport_details"> Паспортные данные водителя</th>
+                    <th scope="col" id="document_date_of_birth"> Дата рождения</th>
+                    <th scope="col" id="document_driver_license_number"> Номер водительского удостоверения</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for document in documents %}
+                    {% if document.status == 'W' %}
+                        <tr id="document_data" {% if document.date_start == document.date_end %}
+                            class="one_time_pass" {% endif %}>
+                            <td id="document_number">{{ document.number_of_document }}</td>
+                            <td id="document_custom_status">{{ document.custom_status }}</td>
+                            <td id="document_title">{{ document.title }}</td>
+                            <td>
+                                <a href="{% url 'security_pass' document.id %}">Посмотреть</a>
+                            </td>
+                            <td id="document_date_start">{{ document.date_start }}</td>
+                            <td id="document_date_end">{{ document.date_end }}</td>
+                            <td id="document_comment_for_access_office">
+                                <div class="scroll-comment">{{ document.comment_for_access_office }}</div>
+                            </td>
+                            <td id="document_comment_for_security">
+                                <div class="scroll-comment">{{ document.comment_for_security }}</div>
+                            </td>
+                            <td id="document_comment_import">
+                                <div class="scroll-comment">{{ document.comment_import }}</div>
+                            </td>
+                            <td id="document_comment_export">
+                                <div class="scroll-comment">{{ document.comment_export }}</div>
+                            </td>
+                            <td id="document_crossing_point">
+                                {% for crossing_point_name in document.crossing_point_name.all %}
+                                    {{ crossing_point_name }}
+                                {% endfor %}
+                            </td>
+                            <td id="document_license_plate">{{ document.auto.license_plate }}</td>
+                            <td id="document_car_registration_number">{{ document.auto.car_registration_number }}</td>
+                            <td id="document_car_brand">{{ document.auto.car_brand }}</td>
+                            <td id="document_driver">{{ document.auto.driver.full_name }}</td>
+                            <td id="document_passport_details">{{ document.auto.driver.passport_details }}</td>
+                            <td id="document_date_of_birth">{{ document.auto.driver.date_of_birth }}</td>
+                            <td id="document_driver_license_number">{{ document.auto.driver.driver_license_number }}</td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
 {% endblock %}
 {% block js %}
     <script type="text/javascript" src="{% static 'access_office/js/scripts.js' %}"></script>
+    <script>
+        CheckboxState();
+    </script>
 {% endblock %}

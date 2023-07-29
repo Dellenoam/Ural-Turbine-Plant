@@ -113,7 +113,14 @@ th.sorted[data-order="1"]::after {
 .scroll-comment {
     display: block;
     max-height: 100px;
+    max-width: 300px;
     overflow-y: scroll;
+    overflow-wrap: break-word;
+    white-space: pre-line;
+}
+
+.one_time_pass {
+    background-color: rgba(158, 78, 150, 0.699) !important;
 }
 
 /* Document table end */

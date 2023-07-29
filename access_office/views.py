@@ -5,7 +5,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import Http404, JsonResponse, HttpResponse
 from django.shortcuts import render, redirect
 from django.views import View
-from access_office.forms import CrossingPointForm, DocumentForm, AutomobileForm, DocumentSecurityForm, DriverForm, CustomStatusForm
+from access_office.forms import CrossingPointForm, DocumentForm, AutomobileForm, DriverForm, \
+    CustomStatusForm
 from access_office.models import Document, CrossingPoint, Automobile, Driver, CustomStatus
 from django.db.models import Q
 
@@ -69,7 +70,7 @@ class AccessOffice(LoginRequiredMixin, View):
             context = dict()
             selected_record_ids = request.POST.getlist('selected_records')
             selected_records = Document.objects.filter(id__in=selected_record_ids).delete()
-            
+
             return render(request, 'access_office/access_office.html', context)
 
 
@@ -91,13 +92,13 @@ class CreateCrossingPoint(LoginRequiredMixin, View):
             context['error_crossing_point'] = 'Форма была заполнена некорректно'
 
         return render(request, 'access_office/create_crossing_point.html', context)
-    
+
 
 class CrossingPointView(LoginRequiredMixin, View):
     def get(self, request):
         context = dict()
         context['crossing_points'] = CrossingPoint.objects.all()
-        return render (request, 'access_office/crossing_point.html', context)
+        return render(request, 'access_office/crossing_point.html', context)
 
 
 class CrossingPointDelete(LoginRequiredMixin, View):
@@ -115,8 +116,8 @@ class CrossingPointUpdate(LoginRequiredMixin, View):
         context = dict()
         context['record'] = record
         context['form_crossing_point'] = form_crossing_point
-        return render (request, 'access_office/crossing_point_update.html', context)
-    
+        return render(request, 'access_office/crossing_point_update.html', context)
+
     def post(self, request, pk):
         record = CrossingPoint.objects.get(id=pk)
         form_crossing_point = CrossingPointForm(request.POST, instance=record)
@@ -203,6 +204,7 @@ class SearchDocument(View):
             documents = Document.objects.all()
             if not request.user.is_authenticated:
                 documents = documents.filter(status='W')
+            print(documents[0].date_start)
             documents = documents.filter(
                 Q(status__icontains=search)
                 | Q(number_of_document__icontains=search)
@@ -211,6 +213,8 @@ class SearchDocument(View):
                 | Q(date_end__icontains=search)
                 | Q(comment_for_access_office__icontains=search)
                 | Q(comment_for_security__icontains=search)
+                | Q(comment_import__icontains=search)
+                | Q(comment_export__icontains=search)
                 | Q(crossing_point_name__crossing_point_name__icontains=search)
                 | Q(auto__license_plate__icontains=search)
                 | Q(auto__car_brand__icontains=search)
@@ -236,29 +240,21 @@ class Security(View):
 class SecurityPass(View):
     def get(self, request, pk):
         record = Document.objects.get(id=pk)
-        form_security_pass = DocumentSecurityForm(instance=record)
 
         context = dict()
         context['record'] = record
-        context['form_security_pass'] = form_security_pass
 
         return render(request, 'access_office/security_pass.html', context)
 
     def post(self, request, pk):
         record = Document.objects.get(id=pk)
-        form_security_pass = DocumentSecurityForm(request.POST, instance=record)
 
         context = dict()
         context['record'] = record
-        context['form_security_pass'] = form_security_pass
 
-        if form_security_pass.is_valid():
-            form_security_pass.save()
-            return redirect('security')
-        else:
-            context['error_security_pass'] = 'Форма была заполнена некорректно'
-
-        return render(request, 'access_office/security_pass.html', context)
+        record.comment_for_security += request.POST.get('security_comment') + '\n\n'
+        record.save()
+        return redirect('security')
 
 
 class UpdateDocument(LoginRequiredMixin, View):
@@ -360,7 +356,7 @@ class CreateCustomStatus(LoginRequiredMixin, View):
             context['error_custom_status'] = 'Форма была заполнена некорректно'
 
         return render(request, 'access_office/create_custom_document_status.html', context)
-    
+
 
 class CustomStatusView(LoginRequiredMixin, View):
     def get(self, request):
@@ -378,8 +374,8 @@ class CustomStatusUpdate(LoginRequiredMixin, View):
         context = dict()
         context['record'] = record
         context['form_custom_status'] = form_custom_status
-        return render (request, 'access_office/custom_status_update.html', context)
-    
+        return render(request, 'access_office/custom_status_update.html', context)
+
     def post(self, request, pk):
         record = CustomStatus.objects.get(id=pk)
         form_custom_status = CustomStatusForm(request.POST, instance=record)
@@ -395,6 +391,7 @@ class CustomStatusUpdate(LoginRequiredMixin, View):
             context['error_custom_status'] = 'Форма была заполнена некорректно'
 
         return render(request, 'access_office/custom_status_update.html')
+
 
 class CustomStatusDelete(LoginRequiredMixin, View):
     def get(self, request, pk):

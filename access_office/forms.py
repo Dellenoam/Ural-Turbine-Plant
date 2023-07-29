@@ -8,7 +8,7 @@ class DocumentForm(ModelForm):
     class Meta:
         model = Document
         fields = ['status', 'custom_status', 'number_of_document', 'title', 'date_start', 'date_end',
-                  'comment_for_access_office', 'comment_import', 'comment_export',
+                  'comment_for_access_office', 'comment_for_security', 'comment_import', 'comment_export',
                   'crossing_point_name', 'document_file', 'auto']
 
         widgets = {
@@ -44,6 +44,12 @@ class DocumentForm(ModelForm):
                 'rows': 4,
                 'cols': 30,
             }),
+            'comment_for_security': Textarea(attrs={
+                'class': 'md-textarea form-control shadow-none',
+                'placeholder': 'Комментарий охраны',
+                'rows': 4,
+                'cols': 30,
+            }),
             'comment_import': Textarea(attrs={
                 'class': 'md-textarea form-control shadow-none',
                 'placeholder': 'Ввоз',
@@ -75,23 +81,6 @@ class DocumentForm(ModelForm):
             raise forms.ValidationError('Дата окончания не может быть меньше текущей даты.')
         else:
             self.cleaned_data['status'] = 'W'
-
-
-class DocumentSecurityForm(ModelForm):
-    class Meta:
-        model = Document
-        exclude = ['status', 'number_of_document', 'title', 'date_start', 'date_end',
-                   'comment_for_access_office', 'crossing_point_name', 'document_file', 'auto']
-
-        widgets = {
-            'comment_for_security': Textarea(attrs={
-                'id': 'comment_for_security',
-                'class': 'md-textarea form-control shadow-none',
-                'placeholder': 'Комментарий охраны',
-                'rows': 4,
-                'cols': 30,
-            }),
-        }
 
 
 class AutomobileForm(ModelForm):
