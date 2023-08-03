@@ -6,6 +6,7 @@
 {% block styles %}
     <link rel="stylesheet" href="{% static 'access_office/css/styles.css' %}">
 {% endblock %}
+
 {% block content %}
     <div class="mx-2">
         <form method="POST" id="document_form" class="my-2" name="document" enctype="multipart/form-data">
@@ -17,7 +18,7 @@
                 </div>
             {% endif %}
             <div class="d-flex align-items-center gap-2">
-                <div class="input-group w-auto">
+                <div class="input-group w-auto my-2">
                     <span class="input-group-text" id="basic-addon1">Кастомизируемый статус</span>
                     {{ form_document.custom_status }}
                 </div>
@@ -44,7 +45,7 @@
                 <div class="input-group w-auto my-2">
                     <span class="input-group-text" id="basic-addon1">Одноразовый пропуск</span>
                     <span class="form-control" id="basic-addon1">
-                    <input id='one_time_pass' type='checkbox' onchange='OneTimePass(this)'>
+                        <input id='one_time_pass' type='checkbox' onchange='OneTimePass(this)'>
                     </span>
                 </div>
             </div>
@@ -77,21 +78,72 @@
                     {{ form_document.document_file }}
                 </div>
             </div>
-            <div class="d-flex align-items-center gap-2">
-                <div class="input-group w-auto">
-                    <span class="input-group-text" id="basic-addon1">Автомобиль</span>
-                    {{ form_document.auto }}
+            <div class="d-flex align-items-center gap-3 my-2">
+                <span>
+                    <input type="radio" id="choice_automobile" name="choice_auto_pedestrian"
+                           onchange="choice_arrive(this)">
+                    <label for="choice_automobile">Автомобиль</label>
+                </span>
+                <span>
+                        <input type="radio" id="choice_pedestrian" name="choice_auto_pedestrian"
+                               onchange="choice_arrive(this)">
+                        <label for="choice_pedestrian">Пешеход</label>
+                </span>
+            </div>
+            <div id="pedestrian" hidden>
+                <div class="d-flex align-items-center gap-2">
+                    <div class="input-group w-auto my-2">
+                        <span class="input-group-text" id="basic-addon1">Пешеход</span>
+                        {{ form_document.pedestrian }}
+                    </div>
+                    <div class="input-group w-auto">
+                        <input class="btn btn-success my-2" name="form_to_check_document" type="submit"
+                               value="Создать пропуск">
+                    </div>
                 </div>
-                <div class="input-group w-auto">
-                    <input class="btn btn-success my-2" name="form_to_check_document" type="submit" value="Создать пропуск">
+                <div class="d-flex align-items-center gap-2" id="pedestrian_checkbox">
+                    <div class="input-group w-auto my-2">
+                        <span class="input-group-text" id="basic-addon1">Пешеход уже создан</span>
+                        <span class="form-control" id="basic-addon1">
+                        <input class="my-2" type="checkbox" id="pedestrian_checkbox" onchange="HideShow(this)" checked>
+                    </span>
+                    </div>
                 </div>
             </div>
-            <div class="d-flex align-items-center gap-2 hidden" id="automobile_checkbox">
-                <div class="input-group w-auto my-2">
-                    <span class="input-group-text" id="basic-addon1">Автомобиль уже создан</span>
-                    <span class="form-control" id="basic-addon1">
+            <div id="automobile" hidden>
+                <div class="d-flex align-items-center gap-2">
+                    <div class="input-group w-auto">
+                        <span class="input-group-text" id="basic-addon1">Автомобиль</span>
+                        {{ form_document.auto }}
+                    </div>
+                    <div class="input-group w-auto">
+                        <input class="btn btn-success my-2" name="form_to_check_document" type="submit"
+                               value="Создать пропуск">
+                    </div>
+                </div>
+                <div class="d-flex align-items-center gap-2" id="automobile_checkbox">
+                    <div class="input-group w-auto my-2">
+                        <span class="input-group-text" id="basic-addon1">Автомобиль уже создан</span>
+                        <span class="form-control" id="basic-addon1">
                         <input class="my-2" type="checkbox" id="automobile_checkbox" onchange="HideShow(this)" checked>
                     </span>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <form method="POST" id="pedestrian_form" class="my-2" hidden>
+            {% csrf_token %}
+            <hr class="line">
+            <div id="error_pedestrian">
+            </div>
+            <div class="d-flex align-items-center gap-2">
+                <div class="input-group w-auto my-2">
+                    <span class="input-group-text" id="basic-addon1">ФИО Пешехода</span>
+                    {{ form_pedestrian.full_name }}
+                </div>
+                <div class="input-group w-auto">
+                    <input class="btn btn-success my-2" type="submit" value="Создать пешехода">
                 </div>
             </div>
         </form>
@@ -128,7 +180,7 @@
                 <div class="input-group w-auto my-2">
                     <span class="input-group-text" id="basic-addon1">Водитель уже создан</span>
                     <span class="form-control" id="basic-addon1">
-                    <input type="checkbox" id="driver_checkbox" onchange="HideShow(this)" checked>
+                        <input type="checkbox" id="driver_checkbox" onchange="HideShow(this)" checked>
                     </span>
                 </div>
             </div>

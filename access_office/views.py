@@ -6,7 +6,7 @@ from django.http import Http404, JsonResponse, HttpResponse
 from django.shortcuts import render, redirect
 from django.views import View
 from access_office.forms import CrossingPointForm, DocumentForm, AutomobileForm, DriverForm, \
-    CustomStatusForm
+    CustomStatusForm, PedestrianForm
 from access_office.models import Document, CrossingPoint, Automobile, Driver, CustomStatus
 from django.db.models import Q
 
@@ -140,10 +140,12 @@ class CreateDocument(LoginRequiredMixin, View):
         form_document = DocumentForm()
         form_automobile = AutomobileForm()
         form_driver = DriverForm()
+        form_pedestrian = PedestrianForm()
         context = dict()
         context['form_document'] = form_document
         context['form_automobile'] = form_automobile
         context['form_driver'] = form_driver
+        context['form_pedestrian'] = form_pedestrian
 
         return render(request, 'access_office/create_document.html', context)
 
@@ -151,10 +153,12 @@ class CreateDocument(LoginRequiredMixin, View):
         form_document = DocumentForm(request.POST, request.FILES)
         form_automobile = AutomobileForm(request.POST)
         form_driver = DriverForm(request.POST)
+        form_pedestrian = PedestrianForm(request.POST)
         context = dict()
         context['form_document'] = form_document
         context['form_automobile'] = form_automobile
         context['form_driver'] = form_driver
+        context['form_pedestrian'] = form_pedestrian
         if request.POST.get('form_to_check_document'):
             if form_document.is_valid():
                 form_document.save()
@@ -185,6 +189,22 @@ class CreateDocument(LoginRequiredMixin, View):
                     {
                         'driver_id': driver.id,
                         'driver': str(driver),
+                    }
+                )
+            else:
+                return JsonResponse(
+                    {
+                        'error_driver': 'Форма создания водителя была заполнена некорректно',
+                    }
+                )
+
+        elif 'form_to_check_pedestrian' in request.POST:
+            if form_pedestrian.is_valid():
+                pedestrian = form_pedestrian.save()
+                return JsonResponse(
+                    {
+                        'pedestrian_id': pedestrian.id,
+                        'pedestrian': str(pedestrian),
                     }
                 )
             else:

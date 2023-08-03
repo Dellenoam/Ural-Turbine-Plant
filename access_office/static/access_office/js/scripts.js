@@ -36,13 +36,13 @@ function TableHideShow(obj) {
 
 function CheckboxState() {
     let filterElements_head = document.querySelectorAll('#document_head th');
-        filterElements_head.forEach(item => {
-            if (localStorage.getItem(item.id) == 'false') {
-                let checkbox = document.querySelectorAll(`input[id="${item.id}"]`);
-                checkbox[0].removeAttribute('checked');
-                TableHideShow(checkbox[0]);
-            }
-        });
+    filterElements_head.forEach(item => {
+        if (localStorage.getItem(item.id) === 'false') {
+            let checkbox = document.querySelectorAll(`input[id="${item.id}"]`);
+            checkbox[0].removeAttribute('checked');
+            TableHideShow(checkbox[0]);
+        }
+    });
 }
 
 function show_by_status(obj) {
@@ -136,13 +136,15 @@ function HideShow(obj) {
     let form;
     if (obj.id === 'automobile_checkbox') {
         form = document.getElementById('automobile_form')
-    } else {
+    } else if (obj.id === 'driver_checkbox') {
         form = document.getElementById('driver_form')
         if (obj.checked === false) {
             document.getElementById('automobile_checkbox').classList.add('d-none');
         } else {
             document.getElementById('automobile_checkbox').classList.remove('d-none');
         }
+    } else {
+        form = document.getElementById('pedestrian_form')
     }
 
     if (obj.checked === true) {
@@ -262,6 +264,43 @@ $(document).on('submit', '#driver_form', function (e) {
     });
 })
 
+$(document).on('submit', '#pedestrian_form', function (e) {
+    e.preventDefault();
+
+    let data = $('#pedestrian_form').serializeArray();
+    data.push({name: "form_to_check_pedestrian", value: ""});
+
+    $.ajax({
+        type: "POST",
+        url: url,
+        data: data,
+        success: function (response) {
+            if ('error_pedestrian' in response) {
+                CreateError(response['error_pedestrian'], 'error_pedestrian');
+            } else if ('pedestrian_update' in response) {
+                document.getElementById('pedestrian_form').setAttribute('hidden', '');
+                document.getElementById('pedestrian_checkbox').setAttribute('hidden', '');
+                let select = document.getElementById('pedestrian_select');
+                select.querySelector(`[value='${response['pedestrian_id']}']`).remove();
+                let new_pedestrian = document.createElement('option');
+                new_pedestrian.value = response['pedestrian_id'];
+                new_pedestrian.innerHTML = response['pedestrian'];
+                $('#pedestrian_select').append(new_pedestrian);
+                select.querySelector(`[value='${response['pedestrian_id']}']`).selected = true;
+            } else {
+                document.getElementById('pedestrian_form').setAttribute('hidden', '');
+                document.getElementById('pedestrian_checkbox').setAttribute('hidden', '');
+                let new_pedestrian = document.createElement('option');
+                new_pedestrian.value = response['pedestrian_id'];
+                new_pedestrian.innerHTML = response['pedestrian'];
+                $('#pedestrian_select').append(new_pedestrian);
+                let select = document.getElementById('pedestrian_select');
+                select.querySelector(`[value='${response['pedestrian_id']}']`).selected = true;
+            }
+        }
+    });
+})
+
 $(document).on('submit', '#document_form', function () {
     if (document.getElementById('one_time_pass').checked) {
         document.getElementById('date_end').value = document.getElementById('date_start').value;
@@ -298,22 +337,25 @@ $(document).ready(function () {
     $('.crossing_point_name_select').select2({
         theme: 'bootstrap-5'
     });
+    $('.pedestrian_select').select2({
+        theme: 'bootstrap-5'
+    });
 })
 
 function AddCurrentDate() {
-    let currentdate = new Date();
+    let current_date = new Date();
     let comment_object = document.getElementById('comment_for_security');
     let datetime = "";
     if (comment_object.value !== "") {
         datetime = "\n";
     }
     datetime +=
-        + currentdate.getDate() + "."
-        + (currentdate.getMonth() + 1) + "."
-        + currentdate.getFullYear() + " "
-        + currentdate.getHours() + ":"
-        + currentdate.getMinutes() + ":"
-        + currentdate.getSeconds();
+        +current_date.getDate() + "."
+        + (current_date.getMonth() + 1) + "."
+        + current_date.getFullYear() + " "
+        + current_date.getHours() + ":"
+        + current_date.getMinutes() + ":"
+        + current_date.getSeconds();
     document.getElementById('comment_for_security').value += datetime;
 }
 
@@ -330,3 +372,18 @@ jQuery('#date_of_birth').datetimepicker({
     timepicker: false,
     format: 'd.m.Y'
 });
+
+function choice_arrive(obj) {
+    console.log(obj.id);
+    if (obj.id === 'choice_automobile') {
+        let div_automobile = document.getElementById('automobile')
+        let div_pedestrian = document.getElementById('pedestrian')
+        div_automobile.removeAttribute('hidden')
+        div_pedestrian.setAttribute('hidden', '')
+    } else {
+        let div_automobile = document.getElementById('automobile')
+        let div_pedestrian = document.getElementById('pedestrian')
+        div_pedestrian.removeAttribute('hidden')
+        div_automobile.setAttribute('hidden', '')
+    }
+}

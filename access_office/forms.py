@@ -1,7 +1,7 @@
 from datetime import datetime
 from django import forms
 from django.forms import ModelForm, TextInput, DateInput, Textarea, FileInput, SelectMultiple, Select
-from access_office.models import Document, Automobile, Driver, CrossingPoint, CustomStatus
+from access_office.models import Document, Automobile, Driver, CrossingPoint, CustomStatus, Pedestrian
 
 
 class DocumentForm(ModelForm):
@@ -9,7 +9,7 @@ class DocumentForm(ModelForm):
         model = Document
         fields = ['status', 'custom_status', 'number_of_document', 'title', 'date_start', 'date_end',
                   'comment_for_access_office', 'comment_for_security', 'comment_import', 'comment_export',
-                  'crossing_point_name', 'document_file', 'auto']
+                  'crossing_point_name', 'document_file', 'pedestrian', 'auto']
 
         widgets = {
             'status': Select(attrs={
@@ -52,13 +52,13 @@ class DocumentForm(ModelForm):
             }),
             'comment_import': Textarea(attrs={
                 'class': 'md-textarea form-control shadow-none',
-                'placeholder': 'Ввоз',
+                'placeholder': 'Комментарий ввоза | вноса',
                 'rows': 4,
                 'cols': 30,
             }),
             'comment_export': Textarea(attrs={
                 'class': 'md-textarea form-control shadow-none',
-                'placeholder': 'Вывоз',
+                'placeholder': 'Комментарий ввывоза | выноса',
                 'rows': 4,
                 'cols': 30,
             }),
@@ -67,6 +67,10 @@ class DocumentForm(ModelForm):
             }),
             'document_file': FileInput(attrs={
                 'class': 'form-control shadow-none',
+            }),
+            'pedestrian': Select(attrs={
+                'class': 'pedestrian_select',
+                'id': 'pedestrian_select',
             }),
             'auto': Select(attrs={
                 'class': 'auto_select',
@@ -134,6 +138,19 @@ class DriverForm(ModelForm):
                 'autocomplete': 'off',
                 'placeholder': 'Номер водительского удостоверения',
             }),
+        }
+
+
+class PedestrianForm(ModelForm):
+    class Meta:
+        model = Pedestrian
+        fields = ['full_name']
+
+        widgets = {
+            'full_name': TextInput(attrs={
+                'class': 'form-control shadow-none',
+                'placeholder': 'ФИО Пешехода',
+            })
         }
 
 

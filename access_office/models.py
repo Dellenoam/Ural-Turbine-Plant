@@ -43,7 +43,8 @@ class Document(models.Model):
     comment_export = models.TextField('Комментарий вывоза | выноса', blank=True)
     crossing_point_name = models.ManyToManyField('CrossingPoint', verbose_name='Пропускной пункт')
     document_file = models.FileField('Файл документа', upload_to='documents/')
-    auto = models.ForeignKey('Automobile', on_delete=models.CASCADE, verbose_name='Автомобиль', blank=True)
+    pedestrian = models.ForeignKey('Pedestrian', on_delete=models.CASCADE, verbose_name='Пешеход', blank=True, null=True)
+    auto = models.ForeignKey('Automobile', on_delete=models.CASCADE, verbose_name='Автомобиль', blank=True, null=True)
 
     def __str__(self):
         return self.title
@@ -68,7 +69,7 @@ class Automobile(models.Model):
 
 
 class Driver(models.Model):
-    full_name = models.CharField(max_length=120, db_index=True)
+    full_name = models.CharField(max_length=1000, db_index=True)
     passport_details = models.CharField(max_length=10)
     date_of_birth = models.DateField('Дата рождения')
     driver_license_number = models.CharField(max_length=12)
@@ -79,3 +80,14 @@ class Driver(models.Model):
     class Meta:
         verbose_name = 'Водитель'
         verbose_name_plural = 'Водители'
+
+
+class Pedestrian(models.Model):
+    full_name = models.CharField(max_length=1000)
+
+    def __str__(self):
+        return f'{self.full_name}'
+
+    class Meta:
+        verbose_name = 'Пешеход'
+        verbose_name_plural = 'Пешеходы'
