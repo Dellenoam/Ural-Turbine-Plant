@@ -5,3 +5,4 @@ venv
 media
 staticfiles
 .env
+.DS_STORE
